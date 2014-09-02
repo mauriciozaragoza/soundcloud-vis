@@ -20,7 +20,7 @@
 	<script src="js/app.js"></script>
 	<script src="js/controllers.js"></script>
 
-	<title>Popular</title>
+	<title>SoundCloud Mixer</title>
 <meta charset="utf-8">
 </head>
 <body ng-controller="SoundControllers">
@@ -33,25 +33,19 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a class="navbar-brand" href="#">Brand</a>
+	      <a class="navbar-brand" href="#">SoundCloud Mixer</a>
 	    </div>
-	    <div class="collapse navbar-collapse">
-	      <ul class="nav navbar-nav">
-	        <li class="active"><a href="#">Home</a></li>
-	        <li><a href="#about">About</a></li>
-	        <li><a href="#contact">Contact</a></li>
-	      </ul>
-	    </div><!--/.nav-collapse -->
 	  </div>
 	</div>
 
 	<div class="container">
-
-		<input type="text" class="form-control" placeholder="Genre" ng-model="genre">
-		<input type="number" class="form-control" placeholder="Number of songs" ng-model="nSongs">
-		<button type="button" ng-click="getSongs()" class="btn btn-default">Refresh</button>
+		</br>
+		<input type="text" class="form-control" placeholder="Genre" ng-model="genre"></br>
+		<input type="number" class="form-control" placeholder="Number of songs" ng-model="nSongs"></br>
+		<button type="button" ng-click="getSongs()" class="btn btn-default">Play</button>
 
 	  	<div class="track" ng-repeat="t in tracks">
+	  		</br>
 			<iframe width="100%" height="100" scrolling="no" frameborder="no" src="{{t.url}}"></iframe>
 		</div>
 
