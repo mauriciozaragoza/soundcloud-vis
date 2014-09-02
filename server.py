@@ -8,6 +8,7 @@ import urllib
 from pymongo import MongoClient
 from bson import json_util
 import datetime
+import urlparse
 
 client = MongoClient()
 db = client.soundmongers
@@ -25,20 +26,28 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.send_header("Access-Control-Allow-Origin", "*");
 		s.send_header("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
 		s.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		path = s.path.split("=")
-		n = path[-1]
-		result = json.dumps(getSongs(n), default=json_util.default)
+		params =  urlparse.urlparse(s.path)
+		print s.path
+		qs = urlparse.parse_qs(params.query)
+		genre = qs["genre"][0] if "genre" in qs else ''
+		n = int(qs["n"][0])
+		result = json.dumps(getSongs(n, genre.lower()), default=json_util.default)
 		s.send_header("Content-type", "text/html")
 		s.end_headers()
 		s.wfile.write(result)
 
-def getSongs(n):
+def getSongs(n, genre):
 	client = soundcloud.Client(client_id = "1fb9f95527afeacbe1b8be1971b4f6f8")
-	tracks = client.get('/tracks', limit=n, genres="rap")
+
+	if genre == '':
+		tracks = client.get('/tracks', limit=n)
+	else:
+		tracks = client.get('/tracks', limit=n, genres=genre)
+
 	result = []
 	d = datetime.datetime.utcnow()
 
-	cache = results.find({"genre": "rap", "date": {"$gt": d - datetime.timedelta(minutes=1) }})
+	cache = results.find({"genre": genre, "date": {"$gt": d - datetime.timedelta(minutes=1) }})
 
 	if cache.count() > 0:
 		print "CACHED FOR" + str(d)
@@ -47,7 +56,7 @@ def getSongs(n):
 			result.append(track)
 	else:
 		for track in tracks:
-			track = {'id': track.id, 'genre': track.genre.lower(), 'date': d, 'url': "https://w.soundcloud.com/player/?url=" + urllib.quote_plus(track.uri, safe='/') + "&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;single_active=false"}
+			track = {'id': track.id, 'genre': genre.lower(), 'date': d, 'url': "https://w.soundcloud.com/player/?url=" + urllib.quote_plus(track.uri, safe='/') + "&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;single_active=false"}
 
 			result.append(track)
 	
@@ -68,3 +77,4 @@ except KeyboardInterrupt:
 	pass
 httpd.server_close()
 print time.asctime(), "Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER)
+
