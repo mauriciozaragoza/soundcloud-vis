@@ -4,6 +4,14 @@ import BaseHTTPServer
 import SocketServer
 import time
 import json
+import urllib
+from pymongo import MongoClient
+from bson import json_util
+import datetime
+
+client = MongoClient()
+db = client.soundmongers
+results = db.results
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -19,21 +27,33 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		path = s.path.split("=")
 		n = path[-1]
-		result = json.dumps(getSongs(n))
+		result = json.dumps(getSongs(n), default=json_util.default)
 		s.send_header("Content-type", "text/html")
 		s.end_headers()
 		s.wfile.write(result)
 
 def getSongs(n):
 	client = soundcloud.Client(client_id = "1fb9f95527afeacbe1b8be1971b4f6f8")
-	tracks = client.get('/tracks', limit=n)
-	genres = []
-	for track in tracks:
-		t = track.genre
-		if (not t):
-			t = "None"
-		genres.append(t.lower().encode('utf-8'))
-	return genres
+	tracks = client.get('/tracks', limit=n, genres="rap")
+	result = []
+	d = datetime.datetime.utcnow()
+
+	cache = results.find({"genre": "rap", "date": {"$gt": d - datetime.timedelta(minutes=1) }})
+
+	if cache.count() > 0:
+		print "CACHED FOR" + str(d)
+
+		for track in cache:
+			result.append(track)
+	else:
+		for track in tracks:
+			track = {'id': track.id, 'genre': track.genre.lower(), 'date': d, 'url': "https://w.soundcloud.com/player/?url=" + urllib.quote_plus(track.uri, safe='/') + "&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;single_active=false"}
+
+			result.append(track)
+	
+		results.insert(result)
+
+	return result
 
 
 HOST_NAME = "127.0.0.1"
