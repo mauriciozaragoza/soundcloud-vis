@@ -2,8 +2,8 @@ angular.module('SoundApp.controllers', []).
 controller('SoundControllers', ['$scope', '$http', function($scope, $http) {
 	$http.defaults.useXDomain = true;
 	
-	// $http.get("10.43.3.33:9000", {
-	$http.get("http://10.43.3.33:9000", {
+	$http.get("http://127.0.0.1:9000", {
+	// $http.get("http://10.43.3.33:9000", {
 	    params: { 
 	    	n: 10
 	    }

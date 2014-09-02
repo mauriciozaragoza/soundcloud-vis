@@ -3,23 +3,23 @@ from collections import Counter
 import BaseHTTPServer
 import SocketServer
 import time
-
+import json
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 	def do_HEAD(s):
 		s.send_response(200)
 		s.send_header("Content-type", "text/html")
-		self.send_header("Access-Control-Allow-Origin", "*");
-		self.send_header("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
-		self.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		s.end_headers()
 
 	def do_GET(s):
 		s.send_response(200)
+		s.send_header("Access-Control-Allow-Origin", "*");
+		s.send_header("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
+		s.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		path = s.path.split("=")
 		n = path[-1]
-		result = getSongs(n)
+		result = json.dumps(getSongs(n))
 		s.send_header("Content-type", "text/html")
 		s.end_headers()
 		s.wfile.write(result)
