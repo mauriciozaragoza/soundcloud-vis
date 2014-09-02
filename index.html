@@ -47,7 +47,8 @@
 
 	<div class="container">
 
-		<a href="#" ng-click="getSongs()">Refresh</a>
+		<input type="text" class="form-control" placeholder="Genre" ng-model="genre">
+		<button type="button" ng-click="getSongs()" class="btn btn-default">Refresh</button>
 
 	  	<div class="track" ng-repeat="t in tracks">
 			<iframe width="100%" height="100" scrolling="no" frameborder="no" src="{{t.url}}"></iframe>

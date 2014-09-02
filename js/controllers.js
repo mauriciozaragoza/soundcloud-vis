@@ -5,7 +5,8 @@ controller('SoundControllers', ['$scope', '$http', '$sce', function($scope, $htt
 	$scope.getSongs = function() {
 		$http.get("http://127.0.0.1:9000", {
 		    params: { 
-		    	n: 5
+		    	n: 5,
+		    	genre: $scope.genre
 		    }
 		}).success(function(data) {
 			$scope.tracks = data;
