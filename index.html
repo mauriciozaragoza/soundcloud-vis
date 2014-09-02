@@ -48,6 +48,7 @@
 	<div class="container">
 
 		<input type="text" class="form-control" placeholder="Genre" ng-model="genre">
+		<input type="number" class="form-control" placeholder="Number of songs" ng-model="nSongs">
 		<button type="button" ng-click="getSongs()" class="btn btn-default">Refresh</button>
 
 	  	<div class="track" ng-repeat="t in tracks">
