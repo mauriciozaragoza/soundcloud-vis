@@ -40,29 +40,29 @@ def getSongs(n, genre):
 	client = soundcloud.Client(client_id = "1fb9f95527afeacbe1b8be1971b4f6f8")
 
 	if genre == '':
-		tracks = client.get('/tracks', limit=n)
+		tracks = client.get('/tracks', limit=n, order='created_at')
 	else:
-		tracks = client.get('/tracks', limit=n, genres=genre)
+		tracks = client.get('/tracks', limit=n, order='created_at', genres=genre)
 
 	result = []
 	d = datetime.datetime.utcnow()
 
 	cache = results.find({"genre": genre, "date": {"$gt": d - datetime.timedelta(minutes=1) }})
 
-	if cache.count() > 0:
+	if cache.count() >= n:
 		print "CACHED FOR" + str(d)
 
 		for track in cache:
 			result.append(track)
 	else:
 		for track in tracks:
-			track = {'id': track.id, 'genre': genre.lower(), 'date': d, 'url': "https://w.soundcloud.com/player/?url=" + urllib.quote_plus(track.uri, safe='/') + "&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;single_active=false"}
+			track = {'id': track.id, 'genre': genre.lower(), 'realgenre': track.genre, 'date': d, 'url': "https://w.soundcloud.com/player/?url=" + urllib.quote_plus(track.uri, safe='/') + "&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false&amp;single_active=false"}
 
 			result.append(track)
 	
 		results.insert(result)
 
-	return result
+	return result[:n]
 
 
 HOST_NAME = "127.0.0.1"

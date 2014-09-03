@@ -20,7 +20,7 @@
 	<script src="js/app.js"></script>
 	<script src="js/controllers.js"></script>
 
-	<title>SoundCloud Mixer</title>
+	<title>SoundMongers</title>
 <meta charset="utf-8">
 </head>
 <body ng-controller="SoundControllers">
@@ -33,7 +33,11 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a class="navbar-brand" href="#">SoundCloud Mixer</a>
+	      <a class="navbar-brand" href="#">SoundMongers</a>
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="#">Sound Mixer</a></li>
+	        <li><a href="tutorial.html">Tutorial</a></li>
+	      </ul>
 	    </div>
 	  </div>
 	</div>
@@ -42,7 +46,7 @@
 		</br>
 		<input type="text" class="form-control" placeholder="Genre" ng-model="genre"></br>
 		<input type="number" class="form-control" placeholder="Number of songs" ng-model="nSongs"></br>
-		<button type="button" ng-click="getSongs()" class="btn btn-default">Play</button>
+		<button type="button" ng-click="getSongs()" class="btn btnplay btn-lg btn-warning">Play</button>
 
 	  	<div class="track" ng-repeat="t in tracks">
 	  		</br>
