@@ -71,28 +71,37 @@
 	  	<p>First of all you have to make sure you have installed the needed programs in your computer. 
 	  	<br>These are the programs that are recommended to have installed before continuing: </p>
 	  	<ul>
-	  		<li>MongoDB - server</li>
-	  		<li>MongoDB - client</li>
 	  		<li>Python</li>
 	  		<li>Python Pip</li>
+	  		<li>MongoDB</li>
+	  		<li>PyMongo</li>
+	  		<li>Soundcloud API</li>
 	  		<li>Bootstrap (optional)</li>
 	  	</ul>
-	  	<p>Since the Soundcloud API and Bootstrap can be pulled from the internet there is no real need to install them, however you DO need to install Python and Mongo in order to successfully use Soundcloud + Mongo
+	  	<p>Since Bootstrap can be pulled from the internet there is no real need to install it, however you DO need to install all the other software in order to successfully use Soundcloud + Mongo
 	  	<br>NOTE: This tutorial uses Python for database conection, data analysis and Soundcloud API but it can be implemented on any other language you may want.
 	  	<br>The <a href="https://developers.soundcloud.com/">Soundcloud API</a> even provides code for Ruby, Javascript and/or PHP</p>
+	  	<p>First you have to make sure you have installed Python and Python Pip. Python is an awesome tool that lets you code and compile useful programs in a rather easy language. Windows and Mac users can get Python from the <a href="https://www.python.org/">Python page</a> and once it is installed they should get <a href="https://pip.pypa.io/en/latest/installing.html">Python pip</a>. Linux users are most likely to have already a version of Python preinstalled so make sure you have it up to date and install Python Pip using the following commands:</p>
+	  	<p>Next you may want to <a href="http://www.mongodb.org/downloads">install MongoDB</a>. Again, this database selection is mainly arbitrary so you may use any DB you like. Once it is installed in order to be able to use it with Python there is also another library to install which is <a href="">PyMongo</a></p>
+	  	<p>Finally as we said before, installing bootstrap is completely optional so I won't list the steps to do so here but you can see them <a href="">here</a>. As for the Soundcloud API click <a href="">here</a>.</p>
 	  </div>
 	  <div class = "api">
 	  	<h2><a id = "api"> Soundcloud API Usage </a></h2>
-	  	<p>This section is mainly about the Soundcloud API used by developers to link and use Soundcloud on any site. </p>
+	  	<p>This section is mainly about the Soundcloud API used by developers to link and use Soundcloud on any site. The <a href="">API page</a> already contains a lot of examples you may need to develop a fine application on your own but still you may want to tailor it to better suit your needs. The examples posted on the <a href="https://developers.soundcloud.com/docs/api/reference">API Reference page</a> may give a better insight on what you really want to do.</p>
 	  </div>
 	  <div class = "mongo">
 	  	<h2><a id = "con"> MongoDB Connection </a></h2>
-	  	<p>  </p>
+	  	<p>Now to configure the database connection you need to specify the location of the folder that will contain the database:
+	  		<br>mongod --dbpath /data/db <br>
+	  		and after that you need to keep an open terminal that will work as the server while on another terminal the connection is made running:
+	  		<br>mongod<br>
+	  	</p>
 	  </div>
 	  <div class = "data">
 	  	<h2><a id = "data"> Soundcloud Data Manipulation </a></h2>
-	  	<p>After all these steps we are finally ready to do data manipulation on Soundcloud information. Using a GET instruction 
-	  	<br>GET al la API de Soundcloud con un filtro de género, en este caso "RAP"</p>
+	  	<p>After all these steps we are finally ready to do data manipulation on Soundcloud information. Using a GET instruction the simple server calls the Soundcloud database and fetchs information according to the genre filter used, if nothing is inserted then the lastest uploaded songs will be fetched.
+	  	<br>As you can tell you need to first fire up the simple server in the terminal and then make the query. Here the database is used as means of cache memory and nothing else.</p>
+
 	  </div>
 	  <p align = "right"> <a href = "#top">Back to the Top</a> </p>
 	</div>

@@ -11,6 +11,10 @@ It is necessary to install mongodb
 To install mongodb, simply:
 sudo apt-get install mongodb
 
+It is necesary to install pymongo
+To install pymongo, simply:
+pip install pymongo
+
 Need to run the simple server on python:
 python server.py
 
